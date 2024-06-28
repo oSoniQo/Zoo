@@ -1,0 +1,40 @@
+cat > 'Домашние животные'
+Собака
+Собака
+Кошка
+Хомяк
+Хомяк
+cat > 'Вьючные животные'
+Лошадь
+Верблюд
+Осёл
+Осёл
+cat 'Домашние животные' 'Вьючные животные' > newfile
+cat newfile
+Собака
+Собака
+Кошка
+Хомяк
+Хомяк
+Хомяк
+Лошадь
+Верблюд
+Осёл
+Осёл
+mv newfile 'Друзья человека'
+mv 'Друзья человека' newdir/
+sudo apt install mysql-community-server
+sudo dpkg -i mysql-apt-config_0.8.30-1_all.deb
+sudo dpkg -r mysql-apt-config
+history
+    1  cat > 'Домашние животные'
+    2  cat > 'Вьючные животные'
+    3  cat 'Домашние животные' 'Вьючные животные' > newfile
+    4  cat newfile
+    5  mv newfile 'Друзья человека'
+    6  mkdir newdir
+    7  mv 'Друзья человека' newdir/
+    8  sudo apt install mysql-community-server
+    9  sudo dpkg -i mysql-apt-config_0.8.30-1_all.deb
+   10  sudo dpkg -r mysql-apt-config
+   11  history
