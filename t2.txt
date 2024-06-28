@@ -1,0 +1,44 @@
+CREATE DATABASE Друзья_человека;
+USE Друзья_человека;
+CREATE TABLE Pets ( id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(15), type VARCHAR(15), birthdate DATE, commands VARCHAR(50) );
+CREATE TABLE Pack_animals ( id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(15), type VARCHAR(15), birthdate DATE, commands VARCHAR(50) );
+CREATE TABLE Dogs ( id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(15), birthdate DATE, commands VARCHAR(50) );
+CREATE TABLE Cats ( id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(15), birthdate DATE, commands VARCHAR(50) );
+CREATE TABLE Hamsters ( id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(15), birthdate DATE, commands VARCHAR(50) );
+CREATE TABLE Horses ( id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(15), birthdate DATE, commands VARCHAR(50) );
+CREATE TABLE Camels ( id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(15), birthdate DATE, commands VARCHAR(50) );
+CREATE TABLE Donkeys ( id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(15), birthdate DATE, commands VARCHAR(50) );
+ALTER TABLE Cats AUTO_INCREMENT = 11;
+ALTER TABLE Hamsters AUTO_INCREMENT = 21;
+ALTER TABLE Horses AUTO_INCREMENT = 31;
+ALTER TABLE Camels AUTO_INCREMENT = 41;
+ALTER TABLE Donkeys AUTO_INCREMENT = 51;
+INSERT INTO Dogs (name, birthdate, commands) VALUES ('Боб', '2020-09-04', 'ко мне');
+INSERT INTO Cats (name, birthdate, commands) VALUES ('Шани', '2018-07-01', 'подай лапу, сидеть');
+INSERT INTO Hamsters (name, birthdate, commands) VALUES ('Фред', '2021-09-14', 'кувырок');
+INSERT INTO Horses (name, birthdate, commands) VALUES ('Люси', '2016-08-04', 'кругом');
+INSERT INTO Camels (name, birthdate, commands) VALUES ('Рим', '2023-12-13', 'лежать');
+INSERT INTO Donkeys (name, birthdate, commands) VALUES ('Нила', '2022-11-21', '');
+TRUNCATE Camels;
+CREATE TABLE Horses_and_Donkeys AS SELECT * FROM Horses UNION SELECT * FROM Donkeys;
+CREATE TABLE Young_animals AS SELECT * FROM (SELECT * FROM Dogs UNION SELECT * FROM Cats UNION SELECT * FROM Hamsters UNION SELECT * FROM Horses UNION SELECT * FROM Camels UNION SELECT * FROM Donkeys) AS new_table1 WHERE TIMESTAMPDIFF(MONTH, birthdate, CURDATE()) > 12 AND TIMESTAMPDIFF(MONTH, birthdate, CURDATE()) < 36;
+ALTER TABLE Young_animals ADD age VARCHAR(20);
+UPDATE Young_animals SET age = CONCAT(FLOOR((TIMESTAMPDIFF(MONTH, birthdate, CURDATE()) / 12)), ' y ', MOD(TIMESTAMPDIFF(MONTH, birthdate, CURDATE()), 12) , ' m');
+CREATE TEMPORARY TABLE All_tables AS SELECT *,
+CASE 
+WHEN id BETWEEN 1 AND 10
+THEN 'Dogs'
+WHEN id BETWEEN 11 AND 20
+THEN 'Cats'
+WHEN id BETWEEN 21 AND 30
+THEN 'Hamsters'
+WHEN id BETWEEN 31 AND 40
+THEN 'Horses'
+WHEN id BETWEEN 41 AND 50
+THEN 'Camels'
+WHEN id BETWEEN 51 AND 60
+THEN 'Donkeys'
+ELSE ''
+END AS from_table
+FROM (SELECT * FROM Dogs UNION SELECT * FROM Cats UNION SELECT * FROM Hamsters UNION SELECT * FROM Horses UNION SELECT * FROM Camels UNION SELECT * FROM Donkeys) AS new_tab;
+CREATE TABLE One_table AS SELECT All_tables.id, All_tables.name, All_tables.birthdate, All_tables.commands, All_tables.from_table, age FROM All_tables LEFT JOIN Young_animals USING(id);
